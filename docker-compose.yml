@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: esakshi_mplads_backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=sqlite:///./mplads.db
+      - SECRET_KEY=mplads_esakshi_super_secret_jwt_key_2026_gov_in
+    volumes:
+      - ./mplads_data:/app/data
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: esakshi_mplads_frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
