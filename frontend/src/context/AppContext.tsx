@@ -2,7 +2,12 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { UserRole, UserProfile, Severity } from '../types';
 import { api } from '../services/api';
 
+export type AppTheme = 'light' | 'dark';
+
 interface AppContextType {
+  theme: AppTheme;
+  setTheme: (t: AppTheme) => void;
+  toggleTheme: () => void;
   role: UserRole;
   setRole: (r: UserRole) => void;
   currentUser: UserProfile;
@@ -74,7 +79,9 @@ const translations = {
     role_auditor: "CAG Principal Director of Audit",
     role_state: "State Nodal Authority (MH)",
     role_da: "District Authority (Nashik)",
-    role_mp: "Hon'ble MP Rajesh Sharma"
+    role_mp: "Hon'ble MP Rajesh Sharma",
+    light_mode: "Light Mode",
+    dark_mode: "Dark Mode"
   },
   hi: {
     portal_title: "ई-साक्षी — राष्ट्रीय एमपीएलएडीएस निगरानी एवं विसंगति पहचान पोर्टल",
@@ -118,7 +125,9 @@ const translations = {
     role_auditor: "सीएजी प्रधान लेखा परीक्षा निदेशक",
     role_state: "राज्य नोडल प्राधिकरण (महाराष्ट्र)",
     role_da: "जिला प्राधिकारी (नासिक)",
-    role_mp: "माननीय सांसद राजेश शर्मा"
+    role_mp: "माननीय सांसद राजेश शर्मा",
+    light_mode: "लाइट मोड",
+    dark_mode: "डार्क मोड"
   }
 };
 
@@ -133,6 +142,12 @@ const defaultUser: UserProfile = {
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [theme, setThemeState] = useState<AppTheme>(() => {
+    const saved = localStorage.getItem('mplads_theme');
+    if (saved === 'dark' || saved === 'light') return saved;
+    return 'light'; // Default to Light Mode as requested
+  });
+
   const [role, setRoleState] = useState<UserRole>('ministry');
   const [currentUser, setCurrentUser] = useState<UserProfile>(defaultUser);
   const [financialYear, setFinancialYear] = useState<string>('Apr 2025 – Mar 2026');
@@ -147,9 +162,23 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [showExplainer, setShowExplainer] = useState<boolean>(false);
   const [lastSynced, setLastSynced] = useState<string>('Synced 4 min ago');
 
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    document.documentElement.classList.remove('light', 'dark');
+    document.documentElement.classList.add(theme);
+    localStorage.setItem('mplads_theme', theme);
+  }, [theme]);
+
+  const setTheme = (t: AppTheme) => {
+    setThemeState(t);
+  };
+
+  const toggleTheme = () => {
+    setThemeState((prev) => (prev === 'light' ? 'dark' : 'light'));
+  };
+
   const setRole = (r: UserRole) => {
     setRoleState(r);
-    // Adjust default state or filters if role is scoped
     if (r === 'state_nodal') {
       setSelectedState('Maharashtra');
     } else if (r === 'district_authority') {
@@ -181,6 +210,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   return (
     <AppContext.Provider
       value={{
+        theme,
+        setTheme,
+        toggleTheme,
         role,
         setRole,
         currentUser,

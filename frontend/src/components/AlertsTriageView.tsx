@@ -3,14 +3,8 @@ import { useApp } from '../context/AppContext';
 import { api } from '../services/api';
 import { AnomalyAlert, AlertStatus, Severity } from '../types';
 import { 
-  ShieldAlert, 
   Search, 
-  Filter, 
-  Eye, 
-  CheckCircle2, 
-  Clock, 
   Download, 
-  HelpCircle,
   FileCheck
 } from 'lucide-react';
 
@@ -73,31 +67,31 @@ export const AlertsTriageView: React.FC = () => {
   return (
     <div className="space-y-4">
       {/* Controls Bar */}
-      <div className="bg-gov-card border border-gov-border rounded-lg p-4 flex flex-wrap items-center justify-between gap-3 shadow-sm">
+      <div className="bg-gov-card border border-gov-border rounded-xl p-4 flex flex-wrap items-center justify-between gap-3 shadow-gov">
         <div className="flex items-center space-x-3 flex-1 min-w-[280px]">
           <div className="relative flex-1">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-gov-muted absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               placeholder="Search alerts by ID, rule, MP, or description..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full bg-slate-900 text-xs text-white pl-9 pr-4 py-2 rounded-md border border-slate-700 focus:outline-none focus:border-orange-500 placeholder:text-slate-500"
+              className="w-full bg-gov-card text-xs text-gov-primary pl-9 pr-4 py-2 rounded-lg border border-gov-border focus:outline-none focus:border-orange-500 placeholder:text-gov-muted font-medium shadow-xs"
             />
           </div>
         </div>
 
         <div className="flex items-center space-x-2">
-          {/* Status Tabs */}
-          <div className="flex bg-slate-900 rounded p-0.5 border border-slate-700 text-xs">
+          {/* Status Tabs (Rounded pills) */}
+          <div className="flex bg-gov-card-muted p-0.5 rounded-full border border-gov-border text-xs">
             {['All', 'Open', 'Under Review', 'Resolved', 'False Positive'].map((st) => (
               <button
                 key={st}
                 onClick={() => setStatusFilter(st)}
-                className={`px-3 py-1.5 rounded transition ${
+                className={`px-3 py-1.5 rounded-full font-semibold transition cursor-pointer ${
                   statusFilter === st
-                    ? 'bg-orange-600 text-white font-semibold shadow'
-                    : 'text-slate-400 hover:text-white'
+                    ? 'bg-orange-600 text-white shadow-xs'
+                    : 'text-gov-muted hover:text-gov-primary'
                 }`}
               >
                 {st}
@@ -107,9 +101,9 @@ export const AlertsTriageView: React.FC = () => {
 
           <button
             onClick={exportCSV}
-            className="flex items-center space-x-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs px-3 py-2 rounded border border-slate-700 transition"
+            className="flex items-center space-x-1.5 bg-gov-card hover:bg-gov-card-muted text-gov-primary text-xs font-semibold px-3.5 py-2 rounded-lg border border-gov-border transition shadow-sm cursor-pointer"
           >
-            <Download className="w-3.5 h-3.5 text-slate-400" />
+            <Download className="w-3.5 h-3.5 text-gov-muted" />
             <span>Export CSV</span>
           </button>
         </div>
@@ -118,66 +112,67 @@ export const AlertsTriageView: React.FC = () => {
       {/* Alerts Grid */}
       <div className="space-y-3">
         {loading ? (
-          <div className="bg-gov-card p-12 text-center text-slate-500 rounded-lg">
+          <div className="bg-gov-card p-12 text-center text-gov-muted border border-gov-border rounded-xl font-medium">
             Loading anomaly alerts & triage audit log...
           </div>
         ) : filteredAlerts.length === 0 ? (
-          <div className="bg-gov-card p-12 text-center text-slate-500 rounded-lg">
+          <div className="bg-gov-card p-12 text-center text-gov-muted border border-gov-border rounded-xl font-medium">
             No anomaly alerts match the selected criteria.
           </div>
         ) : (
           filteredAlerts.map((a) => (
             <div
               key={a.alert_id}
-              className={`bg-gov-card border p-4 rounded-lg flex flex-col md:flex-row md:items-center justify-between gap-4 transition shadow-sm hover:border-slate-600 ${
-                a.severity === 'Critical' ? 'border-red-900/50 bg-red-950/10' :
-                a.severity === 'High' ? 'border-orange-900/50 bg-orange-950/10' :
-                'border-gov-border'
+              className={`bg-gov-card border p-4 rounded-xl flex flex-col md:flex-row md:items-center justify-between gap-4 transition shadow-gov ${
+                a.severity === 'Critical' ? 'border-l-4 border-l-red-600' :
+                a.severity === 'High' ? 'border-l-4 border-l-orange-500' :
+                a.severity === 'Medium' ? 'border-l-4 border-l-amber-500' :
+                'border-l-4 border-l-emerald-600'
               }`}
             >
               <div className="space-y-1.5 flex-1">
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="font-mono font-bold text-slate-100 text-xs">
+                  <span className="font-mono font-bold text-gov-primary text-xs">
                     {a.alert_id}
                   </span>
-                  <span className="text-[11px] font-bold text-orange-400">
+                  <span className="text-[11px] font-bold text-orange-600 dark:text-orange-400">
                     {a.alert_type}
                   </span>
                   {a.rule_code && (
-                    <span className="text-[10px] font-mono bg-slate-800 text-slate-300 px-2 py-0.5 rounded border border-slate-700">
+                    <span className="text-[10px] font-mono bg-gov-card-muted text-gov-secondary px-2 py-0.5 rounded-md border border-gov-border font-bold">
                       Clause {a.rule_code}
                     </span>
                   )}
-                  <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
-                    a.severity === 'Critical' ? 'bg-red-950 text-red-400 border border-red-800' :
-                    a.severity === 'High' ? 'bg-orange-950 text-orange-400 border border-orange-800' :
-                    a.severity === 'Medium' ? 'bg-amber-950 text-amber-400 border border-amber-800' :
-                    'bg-emerald-950 text-emerald-400 border border-emerald-800'
+                  <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase ${
+                    a.severity === 'Critical' ? 'bg-red-500/15 text-red-700 dark:text-red-400 border border-red-500/40' :
+                    a.severity === 'High' ? 'bg-orange-500/15 text-orange-700 dark:text-orange-400 border border-orange-500/40' :
+                    a.severity === 'Medium' ? 'bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-500/40' :
+                    'bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/40'
                   }`}>
                     {a.severity} Severity ({a.risk_score}/100)
                   </span>
-                  <span className={`px-2 py-0.5 rounded text-[10px] font-semibold border ${
-                    a.status === 'Resolved' ? 'bg-emerald-950 text-emerald-400 border-emerald-800' :
-                    a.status === 'Under Review' ? 'bg-blue-950 text-blue-400 border-blue-800' :
-                    a.status === 'False Positive' ? 'bg-purple-950 text-purple-400 border-purple-800' :
-                    'bg-slate-800 text-slate-400 border-slate-700'
+                  <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase ${
+                    a.status === 'Resolved' ? 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/40' :
+                    a.status === 'Under Review' ? 'bg-blue-500/15 text-blue-700 dark:text-blue-400 border border-blue-500/40' :
+                    a.status === 'False Positive' ? 'bg-purple-500/15 text-purple-700 dark:text-purple-400 border border-purple-500/40' :
+                    'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700'
                   }`}>
                     {a.status}
                   </span>
                 </div>
 
-                <p className="text-xs text-slate-300 leading-relaxed">
+                <p className="text-xs text-gov-secondary leading-relaxed font-medium">
                   {a.description}
                 </p>
 
-                <div className="flex flex-wrap items-center gap-3 text-[11px] text-gov-textMuted pt-1">
-                  <span>Entity: <strong className="text-slate-300 font-mono">{a.entity_id}</strong> ({a.entity_name || a.district || a.state})</span>
+                <div className="flex flex-wrap items-center gap-3 text-[11px] text-gov-muted pt-1">
+                  <span>Entity: <strong className="text-gov-primary font-mono">{a.entity_id}</strong> ({a.entity_name || a.district || a.state})</span>
                   <span>•</span>
                   <span>Detected: {a.detected_on}</span>
                   {a.reviewer_comment && (
                     <>
                       <span>•</span>
-                      <span className="text-amber-300/90 font-medium italic">
+                      <span className="text-amber-700 dark:text-amber-400 font-medium italic">
                         Remark ({a.reviewer_role}): "{a.reviewer_comment}"
                       </span>
                     </>
@@ -190,14 +185,14 @@ export const AlertsTriageView: React.FC = () => {
                 {a.entity_type === 'work' && (
                   <button
                     onClick={() => setSelectedWorkId(a.entity_id)}
-                    className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold rounded border border-slate-700 transition"
+                    className="px-3.5 py-1.5 bg-gov-card hover:bg-gov-card-muted text-gov-primary text-xs font-semibold rounded-lg border border-gov-border transition cursor-pointer"
                   >
                     Work Dossier
                   </button>
                 )}
                 <button
                   onClick={() => setOpenTriageAlertId(a.alert_id)}
-                  className="px-4 py-1.5 bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white text-xs font-bold rounded shadow transition flex items-center gap-1.5"
+                  className="px-4 py-1.5 bg-orange-600 hover:bg-orange-700 text-white text-xs font-bold rounded-lg shadow-sm hover:shadow transition flex items-center gap-1.5 cursor-pointer"
                 >
                   <FileCheck className="w-3.5 h-3.5" />
                   <span>Triage Decision</span>

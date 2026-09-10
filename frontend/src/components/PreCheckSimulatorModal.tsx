@@ -4,14 +4,9 @@ import { api } from '../services/api';
 import { PreCheckWorkResponse } from '../types';
 import { 
   CheckCircle2, 
-  AlertTriangle, 
   XCircle, 
-  HelpCircle, 
   ShieldCheck, 
-  Play, 
-  RotateCcw,
-  Building2,
-  Info
+  Play
 } from 'lucide-react';
 
 export const PreCheckSimulatorModal: React.FC = () => {
@@ -79,43 +74,43 @@ export const PreCheckSimulatorModal: React.FC = () => {
   };
 
   return (
-    <div className="bg-gov-card border border-gov-border rounded-lg p-6 space-y-6">
+    <div className="bg-gov-card border border-gov-border rounded-xl p-6 space-y-6 shadow-gov">
       <div>
         <div className="flex items-center space-x-2">
-          <ShieldCheck className="w-5 h-5 text-emerald-400" />
-          <h2 className="text-base font-bold text-white">
+          <ShieldCheck className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+          <h2 className="text-base font-bold text-gov-primary">
             MPLADS Pre-Sanction Statutory Compliance Simulator
           </h2>
         </div>
-        <p className="text-xs text-gov-textMuted mt-1">
+        <p className="text-xs text-gov-muted mt-1 font-medium">
           Instant rule evaluation tool for MPs and District Magistrates to test proposed work recommendations against official 2023 Guidelines before issuance of Administrative Sanctions.
         </p>
       </div>
 
-      {/* Presets Bar */}
-      <div className="flex flex-wrap items-center gap-2 pt-1 border-t border-slate-800">
-        <span className="text-xs text-slate-400 font-semibold uppercase tracking-wider">Quick Presets:</span>
+      {/* Presets Bar (Pills) */}
+      <div className="flex flex-wrap items-center gap-2 pt-1 border-t border-gov-border">
+        <span className="text-xs text-gov-muted font-bold uppercase tracking-wider">Quick Presets:</span>
         <button
           onClick={() => loadPreset('clean')}
-          className="text-xs px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-emerald-400 rounded border border-slate-700 transition"
+          className="text-xs px-3 py-1.5 bg-gov-card-muted hover:bg-slate-100 dark:hover:bg-slate-800 text-emerald-700 dark:text-emerald-400 font-semibold rounded-full border border-gov-border transition cursor-pointer"
         >
           ✓ Compliant Water Work (₹18.5L)
         </button>
         <button
           onClick={() => loadPreset('outside_breach')}
-          className="text-xs px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-orange-400 rounded border border-slate-700 transition"
+          className="text-xs px-3 py-1.5 bg-gov-card-muted hover:bg-slate-100 dark:hover:bg-slate-800 text-orange-700 dark:text-orange-400 font-semibold rounded-full border border-gov-border transition cursor-pointer"
         >
           ⚠ Outside Constituency &gt; ₹25L (Rule R3)
         </button>
         <button
           onClick={() => loadPreset('prohibited_cat')}
-          className="text-xs px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-red-400 rounded border border-slate-700 transition"
+          className="text-xs px-3 py-1.5 bg-gov-card-muted hover:bg-slate-100 dark:hover:bg-slate-800 text-red-700 dark:text-red-400 font-semibold rounded-full border border-gov-border transition cursor-pointer"
         >
           ✕ Prohibited Commercial Asset (Rule R4)
         </button>
         <button
           onClick={() => loadPreset('trust_breach')}
-          className="text-xs px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-red-400 rounded border border-slate-700 transition"
+          className="text-xs px-3 py-1.5 bg-gov-card-muted hover:bg-slate-100 dark:hover:bg-slate-800 text-red-700 dark:text-red-400 font-semibold rounded-full border border-gov-border transition cursor-pointer"
         >
           ✕ Trust Ceiling &gt; ₹50L (Rule R2)
         </button>
@@ -123,14 +118,14 @@ export const PreCheckSimulatorModal: React.FC = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Form */}
-        <form onSubmit={handleSimulate} className="lg:col-span-7 space-y-4 bg-slate-900/90 p-5 rounded-lg border border-slate-800">
+        <form onSubmit={handleSimulate} className="lg:col-span-7 space-y-4 bg-gov-card-muted p-5 rounded-xl border border-gov-border">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="text-xs font-semibold text-slate-300">Recommending MP</label>
+              <label className="text-xs font-bold text-gov-primary">Recommending MP</label>
               <select
                 value={mpId}
                 onChange={(e) => setMpId(e.target.value)}
-                className="w-full mt-1 bg-slate-950 text-xs text-white p-2.5 rounded border border-slate-700 focus:outline-none focus:border-orange-500"
+                className="w-full mt-1 bg-gov-card text-xs text-gov-primary p-2.5 rounded-lg border border-gov-border focus:outline-none focus:border-orange-500 font-medium cursor-pointer shadow-xs"
               >
                 <option value="MP-LS-0101">Rajesh Sharma (Nashik - LS)</option>
                 <option value="MP-LS-0102">Priya Deshmukh (Pune - LS)</option>
@@ -140,11 +135,11 @@ export const PreCheckSimulatorModal: React.FC = () => {
             </div>
 
             <div>
-              <label className="text-xs font-semibold text-slate-300">Work Category</label>
+              <label className="text-xs font-bold text-gov-primary">Work Category</label>
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="w-full mt-1 bg-slate-950 text-xs text-white p-2.5 rounded border border-slate-700 focus:outline-none focus:border-orange-500"
+                className="w-full mt-1 bg-gov-card text-xs text-gov-primary p-2.5 rounded-lg border border-gov-border focus:outline-none focus:border-orange-500 font-medium cursor-pointer shadow-xs"
               >
                 <option value="Drinking Water">Drinking Water</option>
                 <option value="Sanitation">Sanitation / Swachh Bharat</option>
@@ -158,19 +153,19 @@ export const PreCheckSimulatorModal: React.FC = () => {
           </div>
 
           <div>
-            <label className="text-xs font-semibold text-slate-300">Detailed Scope of Work Description</label>
+            <label className="text-xs font-bold text-gov-primary">Detailed Scope of Work Description</label>
             <textarea
               rows={2}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full mt-1 bg-slate-950 text-xs text-white p-2.5 rounded border border-slate-700 focus:outline-none focus:border-orange-500"
+              className="w-full mt-1 bg-gov-card text-xs text-gov-primary p-2.5 rounded-lg border border-gov-border focus:outline-none focus:border-orange-500 font-medium shadow-xs"
               required
             />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="text-xs font-semibold text-slate-300">Estimated Cost (in ₹ Lakh)</label>
+              <label className="text-xs font-bold text-gov-primary">Estimated Cost (in ₹ Lakh)</label>
               <input
                 type="number"
                 step="0.1"
@@ -178,17 +173,17 @@ export const PreCheckSimulatorModal: React.FC = () => {
                 max="500"
                 value={estimatedCostLakh}
                 onChange={(e) => setEstimatedCostLakh(parseFloat(e.target.value) || 0)}
-                className="w-full mt-1 bg-slate-950 text-xs text-white p-2.5 rounded border border-slate-700 focus:outline-none focus:border-orange-500 font-mono"
+                className="w-full mt-1 bg-gov-card text-xs text-gov-primary p-2.5 rounded-lg border border-gov-border focus:outline-none focus:border-orange-500 font-mono font-bold shadow-xs"
                 required
               />
             </div>
 
             <div>
-              <label className="text-xs font-semibold text-slate-300">Proposed Implementing Agency</label>
+              <label className="text-xs font-bold text-gov-primary">Proposed Implementing Agency</label>
               <select
                 value={agencyType}
                 onChange={(e) => setAgencyType(e.target.value)}
-                className="w-full mt-1 bg-slate-950 text-xs text-white p-2.5 rounded border border-slate-700 focus:outline-none focus:border-orange-500"
+                className="w-full mt-1 bg-gov-card text-xs text-gov-primary p-2.5 rounded-lg border border-gov-border focus:outline-none focus:border-orange-500 font-medium cursor-pointer shadow-xs"
               >
                 <option value="Govt Dept">State Govt Department (PWD/RD)</option>
                 <option value="PSU">State PSU / Jal Nigam Board</option>
@@ -200,15 +195,15 @@ export const PreCheckSimulatorModal: React.FC = () => {
           </div>
 
           {/* Outside Constituency Switch */}
-          <div className="flex items-center space-x-3 p-3 bg-slate-950/60 rounded border border-slate-800">
+          <div className="flex items-center space-x-3 p-3 bg-gov-card rounded-lg border border-gov-border">
             <input
               type="checkbox"
               id="outside-check"
               checked={isOutside}
               onChange={(e) => setIsOutside(e.target.checked)}
-              className="w-4 h-4 text-orange-500 rounded border-slate-700 focus:ring-orange-500"
+              className="w-4 h-4 text-orange-600 rounded border-gov-border cursor-pointer"
             />
-            <label htmlFor="outside-check" className="text-xs text-slate-300 cursor-pointer">
+            <label htmlFor="outside-check" className="text-xs text-gov-secondary cursor-pointer font-medium">
               Work recommended outside MP's home constituency / state (Subject to Para 3.12 max ₹25 Lakh limit)
             </label>
           </div>
@@ -216,7 +211,7 @@ export const PreCheckSimulatorModal: React.FC = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-2.5 bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white text-xs font-bold rounded-lg shadow-md transition disabled:opacity-50 flex items-center justify-center space-x-2"
+            className="w-full py-2.5 bg-orange-600 hover:bg-orange-700 text-white text-xs font-bold rounded-lg shadow-sm hover:shadow transition disabled:opacity-50 flex items-center justify-center space-x-2 cursor-pointer"
           >
             <Play className="w-4 h-4" />
             <span>{loading ? 'Evaluating Rules...' : 'Run Statutory Compliance Pre-Check'}</span>
@@ -226,52 +221,52 @@ export const PreCheckSimulatorModal: React.FC = () => {
         {/* Results Panel */}
         <div className="lg:col-span-5 flex flex-col">
           {result ? (
-            <div className={`p-5 rounded-lg border flex-1 space-y-4 ${
+            <div className={`p-5 rounded-xl border flex-1 space-y-4 ${
               result.is_compliant 
-                ? 'bg-emerald-950/40 border-emerald-800/80' 
-                : 'bg-red-950/40 border-red-800/80'
+                ? 'bg-emerald-500/10 border-emerald-500/50' 
+                : 'bg-red-500/10 border-red-500/50'
             }`}>
               {/* Verdict Header */}
               <div className="flex items-center space-x-3">
                 {result.is_compliant ? (
-                  <div className="w-10 h-10 rounded-full bg-emerald-900/60 text-emerald-400 flex items-center justify-center border border-emerald-700">
+                  <div className="w-10 h-10 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow-sm">
                     <CheckCircle2 className="w-6 h-6" />
                   </div>
                 ) : (
-                  <div className="w-10 h-10 rounded-full bg-red-900/60 text-red-400 flex items-center justify-center border border-red-700">
+                  <div className="w-10 h-10 rounded-full bg-red-600 text-white flex items-center justify-center shadow-sm">
                     <XCircle className="w-6 h-6" />
                   </div>
                 )}
                 <div>
-                  <h3 className={`text-sm font-bold ${result.is_compliant ? 'text-emerald-300' : 'text-red-300'}`}>
+                  <h3 className={`text-sm font-bold ${result.is_compliant ? 'text-emerald-700 dark:text-emerald-300' : 'text-red-700 dark:text-red-300'}`}>
                     {result.is_compliant ? 'COMPLIANT & ELIGIBLE' : 'STATUTORY VIOLATION FLAGGED'}
                   </h3>
-                  <div className="text-xs text-slate-300 font-mono">
+                  <div className="text-xs text-gov-muted font-mono font-bold">
                     Predicted Risk Score: {result.risk_score}/100 ({result.risk_band})
                   </div>
                 </div>
               </div>
 
               {/* Recommendation */}
-              <div className="p-3 bg-slate-950/80 rounded border border-slate-800 text-xs">
-                <div className="text-[10px] uppercase font-bold text-slate-400">Statutory Recommendation:</div>
-                <div className="font-semibold text-slate-100 mt-0.5">{result.recommendation}</div>
+              <div className="p-3 bg-gov-card rounded-lg border border-gov-border text-xs">
+                <div className="text-[10px] uppercase font-bold text-gov-muted">Statutory Recommendation:</div>
+                <div className="font-semibold text-gov-primary mt-0.5">{result.recommendation}</div>
               </div>
 
               {/* Violations List */}
               {result.violations.length > 0 && (
                 <div className="space-y-2">
-                  <div className="text-xs font-bold text-red-400 uppercase tracking-wider">
+                  <div className="text-xs font-bold text-red-700 dark:text-red-400 uppercase tracking-wider">
                     Blocking Violations ({result.violations.length}):
                   </div>
                   {result.violations.map((v, i) => (
-                    <div key={i} className="p-3 bg-slate-900/90 rounded border border-red-900/60 text-xs space-y-1">
-                      <div className="flex justify-between items-center text-red-300 font-bold">
+                    <div key={i} className="p-3 bg-gov-card rounded-lg border border-red-500/40 text-xs space-y-1">
+                      <div className="flex justify-between items-center text-red-700 dark:text-red-300 font-bold">
                         <span>{v.rule_name}</span>
-                        <span className="text-[10px] font-mono bg-red-950 px-1.5 py-0.5 rounded border border-red-800">{v.rule_code}</span>
+                        <span className="text-[10px] font-mono bg-red-500/15 px-2 py-0.5 rounded-full border border-red-500/40 font-bold">{v.rule_code}</span>
                       </div>
-                      <p className="text-slate-300 text-[11px] leading-relaxed">{v.explanation}</p>
-                      <p className="text-[10px] text-amber-400/90 italic font-mono pt-1">Ref: {v.guideline_reference}</p>
+                      <p className="text-gov-secondary text-[11px] leading-relaxed font-medium">{v.explanation}</p>
+                      <p className="text-[10px] text-amber-700 dark:text-amber-400 font-bold italic font-mono pt-1">Ref: {v.guideline_reference}</p>
                     </div>
                   ))}
                 </div>
@@ -280,9 +275,9 @@ export const PreCheckSimulatorModal: React.FC = () => {
               {/* Warnings List */}
               {result.warnings.length > 0 && (
                 <div className="space-y-1">
-                  <div className="text-xs font-bold text-amber-400 uppercase tracking-wider">Warnings:</div>
+                  <div className="text-xs font-bold text-amber-700 dark:text-amber-400 uppercase tracking-wider">Warnings:</div>
                   {result.warnings.map((w, i) => (
-                    <div key={i} className="p-2 bg-amber-950/30 border border-amber-900/50 rounded text-[11px] text-amber-200">
+                    <div key={i} className="p-2.5 bg-amber-500/15 border border-amber-500/40 rounded-lg text-[11px] text-amber-800 dark:text-amber-200 font-medium">
                       {w}
                     </div>
                   ))}
@@ -290,11 +285,11 @@ export const PreCheckSimulatorModal: React.FC = () => {
               )}
             </div>
           ) : (
-            <div className="p-8 bg-slate-900/40 border border-slate-800 rounded-lg flex-1 flex flex-col items-center justify-center text-center space-y-3">
-              <ShieldCheck className="w-12 h-12 text-slate-600" />
+            <div className="p-8 bg-gov-card-muted border border-gov-border rounded-xl flex-1 flex flex-col items-center justify-center text-center space-y-3">
+              <ShieldCheck className="w-12 h-12 text-gov-muted" />
               <div>
-                <h4 className="text-xs font-bold text-slate-300 uppercase tracking-wider">No Simulation Run Yet</h4>
-                <p className="text-xs text-slate-500 max-w-xs mt-1">
+                <h4 className="text-xs font-bold text-gov-primary uppercase tracking-wider">No Simulation Run Yet</h4>
+                <p className="text-xs text-gov-muted max-w-xs mt-1 font-medium">
                   Select a preset or enter work details on the left, then click "Run Statutory Compliance Pre-Check".
                 </p>
               </div>

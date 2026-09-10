@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { api } from '../services/api';
-import { Download, FileSpreadsheet, FileText, CheckCircle2, ShieldAlert, Printer, Info } from 'lucide-react';
+import { Download, FileSpreadsheet, FileText } from 'lucide-react';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
@@ -133,29 +133,29 @@ export const ReportsExportView: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div className="bg-gov-card border border-gov-border rounded-lg p-6 shadow-sm">
+      <div className="bg-gov-card border border-gov-border rounded-xl p-6 shadow-gov">
         <div className="flex items-center space-x-2">
-          <FileSpreadsheet className="w-5 h-5 text-orange-400" />
-          <h2 className="text-base font-bold text-white">
+          <FileSpreadsheet className="w-5 h-5 text-orange-600 dark:text-orange-400" />
+          <h2 className="text-base font-bold text-gov-primary">
             Official Audit Reports & Statutory Data Exports
           </h2>
         </div>
-        <p className="text-xs text-gov-textMuted mt-1">
+        <p className="text-xs text-gov-muted mt-1 font-medium">
           Generate printable formal Comptroller and Auditor General (CAG) audit packages or download machine-readable CSV registries for parliamentary reporting.
         </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* PDF Card */}
-        <div className="bg-gov-card border border-gov-border hover:border-slate-600 rounded-lg p-6 space-y-4 shadow-sm flex flex-col justify-between">
+        <div className="bg-gov-card border border-gov-border hover:border-slate-400 dark:hover:border-slate-500 rounded-xl p-6 space-y-4 shadow-gov flex flex-col justify-between">
           <div className="space-y-2">
-            <div className="w-10 h-10 rounded-lg bg-orange-600/20 text-orange-400 flex items-center justify-center border border-orange-500/40">
+            <div className="w-10 h-10 rounded-lg bg-orange-500/15 text-orange-600 dark:text-orange-400 flex items-center justify-center border border-orange-500/40">
               <FileText className="w-5 h-5" />
             </div>
-            <h3 className="text-sm font-bold text-white">
+            <h3 className="text-sm font-bold text-gov-primary">
               Official CAG Statutory Vigilance PDF Report
             </h3>
-            <p className="text-xs text-gov-textMuted leading-relaxed">
+            <p className="text-xs text-gov-muted leading-relaxed font-medium">
               Complete printable executive audit brief containing financial utilization statistics, 80% UC milestone compliance, rule violation breakdowns, and prioritized high-risk works.
             </p>
           </div>
@@ -163,7 +163,7 @@ export const ReportsExportView: React.FC = () => {
           <button
             onClick={generateCAGAuditPDF}
             disabled={generatingPdf}
-            className="w-full py-2.5 bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white text-xs font-bold rounded-lg shadow-md transition disabled:opacity-50 flex items-center justify-center space-x-2"
+            className="w-full py-2.5 bg-orange-600 hover:bg-orange-700 text-white text-xs font-bold rounded-lg shadow-sm hover:shadow transition disabled:opacity-50 flex items-center justify-center space-x-2 cursor-pointer"
           >
             <Download className="w-4 h-4" />
             <span>{generatingPdf ? 'Compiling Official PDF...' : 'Download Official CAG Audit PDF'}</span>
@@ -171,24 +171,24 @@ export const ReportsExportView: React.FC = () => {
         </div>
 
         {/* CSV Card */}
-        <div className="bg-gov-card border border-gov-border hover:border-slate-600 rounded-lg p-6 space-y-4 shadow-sm flex flex-col justify-between">
+        <div className="bg-gov-card border border-gov-border hover:border-slate-400 dark:hover:border-slate-500 rounded-xl p-6 space-y-4 shadow-gov flex flex-col justify-between">
           <div className="space-y-2">
-            <div className="w-10 h-10 rounded-lg bg-emerald-600/20 text-emerald-400 flex items-center justify-center border border-emerald-500/40">
+            <div className="w-10 h-10 rounded-lg bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 flex items-center justify-center border border-emerald-500/40">
               <FileSpreadsheet className="w-5 h-5" />
             </div>
-            <h3 className="text-sm font-bold text-white">
+            <h3 className="text-sm font-bold text-gov-primary">
               Complete MPLADS Works & Financial Register (CSV)
             </h3>
-            <p className="text-xs text-gov-textMuted leading-relaxed">
+            <p className="text-xs text-gov-muted leading-relaxed font-medium">
               Machine-readable export of all 360+ sanctioned durable assets, including GPS coordinates, actual vs estimated expenditures, implementing agency mapping, and ML risk scores.
             </p>
           </div>
 
           <button
             onClick={exportAllWorksCSV}
-            className="w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-100 text-xs font-bold rounded-lg border border-slate-700 shadow-sm transition flex items-center justify-center space-x-2"
+            className="w-full py-2.5 bg-gov-card hover:bg-gov-card-muted text-gov-primary text-xs font-bold rounded-lg border border-gov-border shadow-sm transition flex items-center justify-center space-x-2 cursor-pointer"
           >
-            <Download className="w-4 h-4 text-emerald-400" />
+            <Download className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
             <span>Export Works Register (.CSV)</span>
           </button>
         </div>

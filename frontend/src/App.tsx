@@ -18,8 +18,8 @@ const MainContent: React.FC = () => {
   const { activeTab } = useApp();
 
   return (
-    <main className="flex-1 p-6 overflow-y-auto max-h-[calc(100vh-61px)] bg-[#0b1329]">
-      <div className="max-w-7xl mx-auto space-y-6">
+    <main className="flex-1 p-6 overflow-y-auto max-h-[calc(100vh-65px)] bg-gov-app transition-colors duration-200">
+      <div className="max-w-7xl mx-auto space-y-6 pb-8">
         {activeTab === 'dashboard' && <DashboardView />}
         {activeTab === 'digigov' && <DigiGovDashboardView />}
         {activeTab === 'works' && <WorksView />}
@@ -29,6 +29,16 @@ const MainContent: React.FC = () => {
         {activeTab === 'simulator' && <PreCheckSimulatorModal />}
         {activeTab === 'reports' && <ReportsExportView />}
       </div>
+
+      {/* Official MoSPI / NIC System Footer */}
+      <footer className="max-w-7xl mx-auto pt-6 pb-2 border-t border-gov-border text-center text-xs text-gov-muted space-y-1">
+        <p className="font-semibold text-gov-secondary">
+          National Informatics Centre (NIC) • Ministry of Statistics and Programme Implementation (MoSPI) • Government of India
+        </p>
+        <p className="text-[11px]">
+          eSAKSHI MPLADS Anomaly & Fraud Detection Engine v2.4 | All Data Strictly Verified under Statutory Guidelines 2023 | High Security Tier
+        </p>
+      </footer>
 
       {/* Global Dossier & Triage Modals */}
       <WorkDetailModal />
@@ -41,7 +51,7 @@ const MainContent: React.FC = () => {
 export function App() {
   return (
     <AppProvider>
-      <div className="min-h-screen flex flex-col bg-[#0b1329] text-slate-100 font-sans selection:bg-orange-500 selection:text-white">
+      <div className="min-h-screen flex flex-col bg-gov-app text-gov-primary font-sans selection:bg-orange-500 selection:text-white">
         <Navbar />
         <div className="flex flex-1 overflow-hidden">
           <Sidebar />

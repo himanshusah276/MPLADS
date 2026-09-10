@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { api } from '../services/api';
-import { Award, ChevronRight, AlertCircle } from 'lucide-react';
+import { Award, ChevronRight } from 'lucide-react';
 
 export const HighestRiskMPs: React.FC = () => {
   const { selectedState, setSelectedMPId, setActiveTab, t } = useApp();
@@ -13,29 +13,29 @@ export const HighestRiskMPs: React.FC = () => {
     }).catch(console.error);
   }, [selectedState]);
 
-  const getRiskColor = (score: number) => {
-    if (score >= 75) return 'bg-red-500 text-red-100';
-    if (score >= 50) return 'bg-orange-500 text-orange-100';
-    if (score >= 25) return 'bg-amber-500 text-amber-100';
-    return 'bg-emerald-500 text-emerald-100';
+  const getRiskBadge = (score: number) => {
+    if (score >= 75) return 'bg-red-500/15 text-red-700 dark:text-red-400 border border-red-500/40';
+    if (score >= 50) return 'bg-orange-500/15 text-orange-700 dark:text-orange-400 border border-orange-500/40';
+    if (score >= 25) return 'bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-500/40';
+    return 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/40';
   };
 
   return (
-    <div className="bg-gov-card border border-gov-border rounded-lg p-4 flex flex-col h-full shadow-sm">
+    <div className="bg-gov-card border border-gov-border rounded-xl p-4 flex flex-col h-full shadow-gov">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-sm font-semibold text-white flex items-center gap-2">
-          <Award className="w-4 h-4 text-orange-400" />
+        <h3 className="text-sm font-bold text-gov-primary flex items-center gap-2">
+          <Award className="w-4 h-4 text-orange-600 dark:text-orange-400" />
           {t('highest_risk_mps')}
         </h3>
         <button
           onClick={() => setActiveTab('mps')}
-          className="text-xs text-orange-400 hover:text-orange-300 font-medium transition"
+          className="text-xs text-orange-600 dark:text-orange-400 hover:underline font-bold px-2 py-1 rounded-md hover:bg-orange-500/10 transition cursor-pointer"
         >
           {t('view_all')}
         </button>
       </div>
 
-      <div className="space-y-3 flex-1 flex flex-col justify-around">
+      <div className="space-y-2.5 flex-1 flex flex-col justify-around">
         {mps.map((mp) => (
           <div
             key={mp.mp_id}
@@ -43,19 +43,19 @@ export const HighestRiskMPs: React.FC = () => {
               setSelectedMPId(mp.mp_id);
               setActiveTab('mps');
             }}
-            className="group flex items-center justify-between p-2.5 rounded-md bg-slate-900/60 hover:bg-slate-800/80 border border-slate-800/80 hover:border-slate-700 transition cursor-pointer"
+            className="group flex items-center justify-between p-2.5 rounded-lg bg-gov-card-muted hover:bg-slate-100 dark:hover:bg-slate-800 border border-gov-border transition cursor-pointer"
           >
             <div className="flex items-center space-x-3">
-              {/* Avatar circle */}
-              <div className="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-xs font-bold text-slate-300 group-hover:border-orange-500/50 transition">
+              {/* Rounded Avatar */}
+              <div className="w-8 h-8 rounded-full bg-[#0a2540] text-amber-300 border border-slate-600 flex items-center justify-center text-xs font-bold font-mono">
                 {mp.name.split(' ').map((n: string) => n[0]).join('').slice(0, 2)}
               </div>
               <div>
-                <div className="text-xs font-bold text-slate-100 group-hover:text-orange-400 transition flex items-center gap-1.5">
+                <div className="text-xs font-bold text-gov-primary group-hover:text-orange-600 dark:group-hover:text-orange-400 transition flex items-center gap-1.5">
                   <span>{mp.name}</span>
-                  <span className="text-[10px] text-slate-400 font-normal">({mp.house})</span>
+                  <span className="text-[10px] text-gov-muted font-normal">({mp.house})</span>
                 </div>
-                <div className="text-[11px] text-gov-textMuted flex items-center gap-2">
+                <div className="text-[11px] text-gov-muted flex items-center gap-1.5 font-medium">
                   <span>{mp.constituency}</span>
                   <span>•</span>
                   <span>{mp.party}</span>
@@ -63,18 +63,12 @@ export const HighestRiskMPs: React.FC = () => {
               </div>
             </div>
 
-            {/* Risk Score Pill & Bar */}
+            {/* Risk Score */}
             <div className="flex items-center space-x-2">
-              <div className="w-1.5 h-6 rounded-full bg-slate-800 overflow-hidden">
-                <div 
-                  className={`w-full ${getRiskColor(mp.composite_risk_score)}`}
-                  style={{ height: `${Math.min(100, mp.composite_risk_score)}%` }}
-                />
-              </div>
-              <span className={`text-xs font-mono font-bold px-2 py-0.5 rounded ${getRiskColor(mp.composite_risk_score)}`}>
-                {Math.round(mp.composite_risk_score)}
+              <span className={`text-xs font-mono font-bold px-2.5 py-0.5 rounded-full ${getRiskBadge(mp.composite_risk_score)}`}>
+                {Math.round(mp.composite_risk_score)}/100
               </span>
-              <ChevronRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-slate-300 group-hover:translate-x-0.5 transition" />
+              <ChevronRight className="w-3.5 h-3.5 text-gov-muted group-hover:text-gov-primary group-hover:translate-x-0.5 transition" />
             </div>
           </div>
         ))}
